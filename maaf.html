@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maafin Epin Ya? 🥺</title>
+    <!-- Ini dia tambahan font baru supaya teksnya rapi dan bulat -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ffdde1;
+        /* Font diubah jadi Poppins */
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 90%;
+        z-index: 10;
+      }
+
+      h1 {
+        color: #ff6b81;
+        margin-bottom: 20px;
+        font-weight: 600; /* Bikin judulnya sedikit tebal */
+      }
+
+      p {
+        color: #57606f;
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+      }
+
+      .btn-group {
+        position: relative;
+        height: 50px;
+      }
+
+      button {
+        padding: 12px 30px;
+        font-size: 16px;
+        font-family: inherit;
+        font-weight: 600;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .btn-primary {
+        background-color: #ff4757;
+        color: white;
+        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+      }
+
+      .btn-primary:hover {
+        transform: scale(1.05);
+      }
+
+      #yesBtn {
+        margin-right: 15px;
+      }
+
+      #noBtn {
+        background-color: #f1f2f6;
+        color: #747d8c;
+        position: absolute;
+      }
+
+      textarea {
+        width: 90%;
+        padding: 15px;
+        border-radius: 15px;
+        border: 2px solid #ffdde1;
+        font-family: inherit;
+        font-size: 15px;
+        resize: none;
+        margin-bottom: 20px;
+        outline: none;
+        color: #2f3542;
+      }
+
+      textarea:focus {
+        border-color: #ff6b81;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .success-message img {
+        width: 150px;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Kartu Sampul: Untuk membuka izin suara di HP -->
+    <div class="container" id="coverCard">
+      <h1>Ada pesan buat Dudut 💌</h1>
+      <p>Klik tombol di bawah buat buka suratnya ya!</p>
+      <button class="btn-primary" onclick="bukaSurat()">Buka Pesan</button>
+    </div>
+
+    <!-- Kartu Pertama: Minta Maaf -->
+    <div class="container hidden" id="mainCard">
+      <h1>Maafin Epin ya, dut? 🥺</h1>
+      <p>
+        Epin minta maaf banget yaaa... Epin tau Epin salah kemarin :(  Kalau Dede maafin 
+        nanti kita jalan-jalan santai naik Vario keliling ya. Deal? 💕
+      </p>
+
+      <div class="btn-group">
+        <button id="yesBtn" class="btn-primary" onclick="dimaafin()">Maafin!</button>
+        <button id="noBtn">Nggak Mau</button>
+      </div>
+    </div>
+
+    <!-- Kartu Kedua: Form Permintaan -->
+    <div class="container hidden" id="wishCard">
+      <h1>Makasih udah dimaafin! 💕</h1>
+      <p>
+        Kalau nanti Epin udah punya moni lagi Dede mw apa tulis aja di sini,
+        nanti epin beliin kalo udah ada moni :(
+      </p>
+
+      <textarea
+        id="wishInput"
+        rows="4"
+        placeholder="Ketik kemauan Dede di sini yaaa..."
+      ></textarea>
+      <br />
+      <button id="submitWishBtn" class="btn-primary" onclick="kirimPermintaan()">
+        Kirim Permintaan
+      </button>
+    </div>
+
+    <!-- Kartu Ketiga: Sukses -->
+    <div class="container hidden success-message" id="successCard">
+      <img
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnR1aTduamI5ZXN4MmZwZzlwajB3M2Z2YXRscTRmZmdpand6OXdqeSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/iXKusPZrPi2AIVQeRN/giphy.gif"
+        alt="Happy Cat"
+      />
+      <h1>Yeyyy Permintaan Dicatat! 🎉</h1>
+      <p>
+        Makasih ya cintaaa! Doain moni Epin cepet ngumpul biar bisa kabulin
+        permintaan Dede. I love you! ❤️🛵
+      </p>
+    </div>
+
+    <script>
+      const noBtn = document.getElementById("noBtn");
+      
+      // ========================================================
+      // PASTIKAN NAMA FILE MP3 INI SAMA DENGAN YANG ADA DI FOLDER KAMU
+      // ========================================================
+      const soundGamau = new Audio("suara-gamau.mp3"); 
+      const soundMaafin = new Audio("suara-maafin.mp3"); 
+
+      // Fungsi untuk membuka sampul dan memancing izin suara 
+      function bukaSurat() {
+        soundGamau.play().then(() => {
+          soundGamau.pause();
+          soundGamau.currentTime = 0;
+        }).catch(() => {});
+
+        soundMaafin.play().then(() => {
+          soundMaafin.pause();
+          soundMaafin.currentTime = 0;
+        }).catch(() => {});
+
+        document.getElementById("coverCard").classList.add("hidden");
+        document.getElementById("mainCard").classList.remove("hidden");
+      }
+
+      // Fungsi tombol "Nggak Mau" kabur & bunyi
+      function moveButton(e) {
+        soundGamau.currentTime = 0;
+        soundGamau.play().catch(() => {});
+
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const randomX = Math.random() * (windowWidth - 120);
+        const randomY = Math.random() * (windowHeight - 60);
+
+        noBtn.style.position = "fixed";
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+      }
+
+      noBtn.addEventListener("mouseover", moveButton);
+      noBtn.addEventListener("touchstart", function (e) {
+        e.preventDefault();
+        moveButton();
+      });
+
+      // Fungsi kalau tombol "Maafin!" diklik
+      function dimaafin() {
+        soundMaafin.currentTime = 0;
+        soundMaafin.play().catch(() => {});
+
+        document.getElementById("mainCard").classList.add("hidden");
+        document.getElementById("wishCard").classList.remove("hidden");
+      }
+
+      // Fungsi kirim data ke Google Sheets
+      function kirimPermintaan() {
+        const wish = document.getElementById("wishInput").value;
+
+        if (wish.trim() === "") {
+          alert("Tulis dulu dong Dede mau apa 🥺");
+          return;
+        }
+
+        const btn = document.getElementById("submitWishBtn");
+        btn.innerHTML = "Mencatat...";
+        btn.disabled = true;
+
+        // Link Google Apps Script kamu yang terbaru
+        const scriptURL =
+          "https://script.google.com/macros/s/AKfycbwpWOzyhIgtQtrzbRNAjAYW_O6lK-sC85azjiVntMbBsizJMgtw5DB2GE9TxqMLJC1M_A/exec";
+
+        fetch(scriptURL, {
+          method: "POST",
+          mode: "no-cors",
+          body: new URLSearchParams({ permintaan: wish }),
+        })
+          .then(() => {
+            document.getElementById("wishCard").classList.add("hidden");
+            document.getElementById("successCard").classList.remove("hidden");
+          })
+          .catch((error) => {
+            alert("Duh koneksinya ngadat nih, coba klik lagi ya beb!");
+            btn.innerHTML = "Kirim Permintaan";
+            btn.disabled = false;
+          });
+      }
+    </script>
+  </body>
+</html>
